@@ -9,11 +9,26 @@ const MainPage = () => {
   const params = useParams();
 
   const texts = useMemo(
-    () => ["hello world", "привет мир", "здравствуй, реальность"],
+    () => ["Чего вы больше всего боитесь в программировании", "привет мир", "здравствуй, реальность"],
     []
   );
-
+  const handlePasswordChange = useCallback((event) => {
+    setPassword(event.target.value);
+  }, []);
+  const handleLoginChange = useCallback((event) => {
+    setLogin(event.target.value);
+  }, []);
   const [textHello, setTextHello] = useState(texts[0]);
+  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState("");
+  const [showAuthFields, setShowAuthFields] = useState(false);
+  const [showpassword, setShowPassword] = useState("");
+  const [showlogin, setShowLogin] = useState("");
+  const sendDate=()=>{
+    setShowLogin(login);
+    setShowPassword(password);
+  }
+
 
   const handleNext = useCallback(() => {
     setTextHello((prev) => {
@@ -25,12 +40,42 @@ const MainPage = () => {
 
   return (
     <>
-      <div className="main">
+      {/* <div className="main"> */}
         <div className="main__container">
-          <HelloCard text={textHello} onNext={handleNext} />
-          <InstructionCard />
+          <div>Твои данные</div>
+          {showlogin}/{showpassword}
+          <div className="password-field">
+            <label htmlFor="password" className="password-label">
+              Пароль:
+            </label>
+            <input
+              id="password"
+              type="password"
+              className="password-input"
+              value={password}
+              onChange={handlePasswordChange}
+              placeholder="Введите пароль"
+            />
+          </div>
+          <br></br>
+          <div className="login-field">
+            <label htmlFor="login" className="login-label">
+              Логин:
+            </label>
+            <input
+              id="login"
+              type="login"
+              className="login-input"
+              value={login}
+              onChange={handleLoginChange}
+              placeholder="Введите пароль"
+            />
+          </div>
+          <br></br>
+          <button onClick={()=>{sendDate()}} className="bnt bnt-prymery">отправить</button>
+          {/* <InstructionCard /> */}
         </div>
-      </div>
+      {/* </div> */}
     </>
   );
 };
