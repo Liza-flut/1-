@@ -1,83 +1,50 @@
-import React, { useMemo, useState, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import "./Main.scss";
-import HelloCard from "../components/HelloCard";
-import InstructionCard from "../components/InstructionCard";
+import Card from "../components/Card";
+import React, { useState, useEffect } from "react";
 
 const MainPage = () => {
-  const navigate = useNavigate();
-  const params = useParams();
+  const [cards, setCards] = useState([])
+  const [isLoad, setIsLoad] = useState(true);
 
-  const texts = useMemo(
-    () => ["Чего вы больше всего боитесь в программировании", "привет мир", "здравствуй, реальность"],
-    []
-  );
-  const handlePasswordChange = useCallback((event) => {
-    setPassword(event.target.value);
-  }, []);
-  const handleLoginChange = useCallback((event) => {
-    setLogin(event.target.value);
-  }, []);
-  const [textHello, setTextHello] = useState(texts[0]);
-  const [password, setPassword] = useState("");
-  const [login, setLogin] = useState("");
-  const [showAuthFields, setShowAuthFields] = useState(false);
-  const [showpassword, setShowPassword] = useState("");
-  const [showlogin, setShowLogin] = useState("");
-  const sendDate=()=>{
-    setShowLogin(login);
-    setShowPassword(password);
-  }
-
-
-  const handleNext = useCallback(() => {
-    setTextHello((prev) => {
-      const i = texts.indexOf(prev);
-      const next = texts[(i + 1) % texts.length];
-      return next;
-    });
-  }, [texts]);
-
-  return (
+  useEffect(() => {
+    setIsLoad(true);
+    setTimeout(() => {
+      setCards([
+        {
+          id: 1,
+          image: "images/card.png",
+          title: "112 000 ₽",
+          description: "Кроссовки Nike Pegasus Limited Edition"
+        },
+        {
+          id: 2,
+          image: "images/card.png",
+          title: "112 000 ₽",
+          description: "Кроссовки Nike Pegasus Limited Edition"
+        },
+        {
+          id: 3,
+          image: "images/card.png",
+          title: "112 000 ₽",
+          description: "Кроссовки Nike Pegasus Limited Edition"
+        }
+      ]);
+      setIsLoad(false);
+    }, 3000);
+  },[])
+  return(
     <>
-      {/* <div className="main"> */}
-        <div className="main__container">
-          <div>Твои данные</div>
-          {showlogin}/{showpassword}
-          <div className="password-field">
-            <label htmlFor="password" className="password-label">
-              Пароль:
-            </label>
-            <input
-              id="password"
-              type="password"
-              className="password-input"
-              value={password}
-              onChange={handlePasswordChange}
-              placeholder="Введите пароль"
-            />
-          </div>
-          <br></br>
-          <div className="login-field">
-            <label htmlFor="login" className="login-label">
-              Логин:
-            </label>
-            <input
-              id="login"
-              type="login"
-              className="login-input"
-              value={login}
-              onChange={handleLoginChange}
-              placeholder="Введите пароль"
-            />
-          </div>
-          <br></br>
-          <button onClick={()=>{sendDate()}} className="bnt bnt-prymery">отправить</button>
-          {/* <InstructionCard /> */}
+    {isLoad == true ?  (
+        <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "10vh"}}>Загрузка</div>
+      ) : (
+        <div style={{display: "flex", gap:"20px", padding:"20px"}}>
+          {cards.map((card) =>(
+            <Card key={card.id} title={card.title} image={card.image} description={card.description} /> 
+          ))}
         </div>
-      {/* </div> */}
+      )}
     </>
-  );
+  )
 };
 
 export default MainPage;
