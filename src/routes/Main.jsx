@@ -1,4 +1,5 @@
 import "./Main.scss";
+import Logo from "../components/Logo";
 import Card from "../components/Card";
 import React, { useState, useEffect } from "react";
 import { FaShoppingCart } from 'react-icons/fa';
@@ -51,6 +52,7 @@ const MainPage = () => {
   },[])
   return(
   <>
+    <Logo/>
     <div 
         onClick={clearCart}
         style={{
