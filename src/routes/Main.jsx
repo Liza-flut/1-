@@ -3,6 +3,8 @@ import Logo from "../components/Logo";
 import Card from "../components/Card";
 import React, { useState, useEffect } from "react";
 import { FaShoppingCart } from 'react-icons/fa';
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 const MainPage = () => {
   const [cards, setCards] = useState([])
@@ -19,37 +21,15 @@ const MainPage = () => {
   const [resetCards, setResetCards] = useState(0);
 
   useEffect(() => {
-    setIsLoad(true);
-    setTimeout(() => {
-      setCards([
-        {
-          id: 1,
-          image: "images/card.png",
-          title: "112 000 ₽",
-          description: "Кроссовки Nike Pegasus Limited Edition"
-        },
-        {
-          id: 2,
-          image: "images/card.png",
-          title: "112 000 ₽",
-          description: "Кроссовки Nike Pegasus Limited Edition"
-        },
-        {
-          id: 3,
-          image: "images/card.png",
-          title: "112 000 ₽",
-          description: "Кроссовки Nike Pegasus Limited Edition"
-        },
-        {
-          id: 4,
-          image: "images/card.png",
-          title: "112 000 ₽",
-          description: "Кроссовки Nike Pegasus Limited Edition"
-        }
-      ]);
+  setIsLoad(true);
+  const loadProducts = async () => {
+      const response = await axios.get("https://localhost:7128/api/Product/All");
+      setCards(response.data);
       setIsLoad(false);
-    }, 3000);
-  },[])
+  }
+  loadProducts();
+}, []);
+
   return(
   <>
     <Logo/>
@@ -94,7 +74,7 @@ const MainPage = () => {
           marginTop: "50px"
         }}>
           {cards.map((card) =>(
-            <Card key={card.id} title={card.title} image={card.image} description={card.description} addToCart={addToCart} resetKey={resetCards}/> 
+            <Card key={card.id} title={card.price} image={card.Image || "/images/card.png"} description={card.name} desc= {card.description} addToCart={addToCart} resetKey={resetCards} quantity={card.quantity}/> 
           ))}
         </div>
       )}
